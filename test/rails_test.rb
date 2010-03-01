@@ -150,31 +150,36 @@ $stdout << Vanity.playground.redis.class
   end
 
   def test_connection_from_yaml
-    FileUtils.mkpath "tmp/config"
-    yml = File.open("tmp/config/redis.yml", "w")
-    yml << "production: internal.local:6379\n"
-    yml.flush
-    assert_equal "internal.local:6379", load_rails(<<-RB)
+    with_redis_config do |yml|
+      yml << "production: internal.local:6379\n"
+      yml.flush
+      assert_equal "internal.local:6379", load_rails(<<-RB)
 initializer.after_initialize
 $stdout << Vanity.playground.redis.server
-    RB
-  ensure
-    File.unlink yml
+      RB
+    end
   end
 
   def test_connection_from_yaml_missing
-    FileUtils.mkpath "tmp/config"
-    yml = File.open("tmp/config/redis.yml", "w")
-    yml << "development: internal.local:6379\n"
-    yml.flush
-    assert_equal "localhost:6379", load_rails(<<-RB)
+    with_redis_config do |yml|
+      yml << "development: internal.local:6379\n"
+      yml.flush
+      assert_equal "localhost:6379", load_rails(<<-RB)
 initializer.after_initialize
 $stdout << Vanity.playground.redis.server
-    RB
-  ensure
-    File.unlink yml
+      RB
+    end
   end
 
+  def with_redis_config
+    path = "tmp/config/redis.yml"
+    FileUtils.mkpath File.dirname(path)
+    File.open(path, "w") do |yml|
+      yield yml
+    end
+  ensure
+    File.unlink path
+  end
 
   def load_rails(code)
     tmp = Tempfile.open("test.rb")
