@@ -145,7 +145,7 @@ $stdout << Vanity.playground.redis.server
     assert_equal "Vanity::MockRedis", load_rails(<<-RB)
 Vanity.playground.test!
 initializer.after_initialize
-$stdout << Vanity.playground.redis.class
+$stdout << Vanity.playground.redis.instance_variable_get("@redis").class
     RB
   end
 
