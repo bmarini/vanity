@@ -45,7 +45,12 @@ module Vanity
     end
    
     # Deprecated. Use redis.server instead.
-    attr_accessor :host, :port, :db, :password, :namespace
+    attr_accessor :host, :port, :db, :password
+
+    attr_reader :namespace
+    def namespace=(val)
+      @namespace = redis.namespace = val
+    end
 
     # Path to load experiment files from.
     attr_accessor :load_path
@@ -163,6 +168,8 @@ module Vanity
       else
         raise "I don't know what to do with #{spec_or_connection.inspect}"
       end
+
+      @redis = RedisNS.new(namespace, :redis => @redis)
     end
 
     def redis
