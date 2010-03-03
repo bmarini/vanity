@@ -169,7 +169,7 @@ module Vanity
         raise "I don't know what to do with #{spec_or_connection.inspect}"
       end
 
-      @redis = RedisNS.new(namespace, :redis => @redis)
+      @redis = Redis::Namespace.new(namespace, :redis => @redis)
     end
 
     def redis

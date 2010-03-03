@@ -2,10 +2,7 @@ require "date"
 require "time"
 require "logger"
 
-$LOAD_PATH << File.join(File.dirname(__FILE__), "../vendor/redis-rb/lib")
-$LOAD_PATH << File.join(File.dirname(__FILE__), "../vendor/redis-namespace/lib")
-autoload :Redis, "redis"
-autoload :RedisNS, "vanity/namespace"
+autoload :Redis, "vanity/require_redis"
 
 # All the cool stuff happens in other places.
 # @see Vanity::Helper
