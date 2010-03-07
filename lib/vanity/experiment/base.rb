@@ -68,7 +68,6 @@ module Vanity
         @playground = playground
         @id, @name = id.to_sym, name
         @options = options || {}
-        @namespace = "#{@playground.namespace}:#{@id}"
         @identify_block = method(:default_identify)
       end
 
@@ -196,10 +195,10 @@ module Vanity
       
       # Returns key for this experiment, or with an argument, return a key
       # using the experiment as the namespace.  Examples:
-      #   key => "vanity:experiments:green_button"
-      #   key("participants") => "vanity:experiments:green_button:participants"
+      #   key => "experiments:green_button"
+      #   key("participants") => "experiments:green_button:participants"
       def key(name = nil)
-        name ? "#{@namespace}:#{name}" : @namespace
+        name ? "#{@id}:#{name}" : @id.to_s
       end
 
       # Shortcut for Vanity.playground.redis

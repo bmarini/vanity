@@ -30,12 +30,6 @@ class ExperimentTest < Test::Unit::TestCase
     end
   end
 
-  def test_uses_playground_namespace_for_experiment
-    new_ab_test(:ice_cream_flavor) { metrics :happiness }
-    assert_equal "vanity:#{Vanity::Version::MAJOR}:ice_cream_flavor", experiment(:ice_cream_flavor).send(:key)
-    assert_equal "vanity:#{Vanity::Version::MAJOR}:ice_cream_flavor:participants", experiment(:ice_cream_flavor).send(:key, "participants")
-  end
-
 
   # -- Loading experiments --
 
