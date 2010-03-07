@@ -1,0 +1,4 @@
+.bundle
+*.sqlite
+*.rdb
+/test/myapp
